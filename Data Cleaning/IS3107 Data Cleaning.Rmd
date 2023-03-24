@@ -1,0 +1,87 @@
+---
+title: "IS3107 Data Cleaning"
+output: html_document
+date: "2023-03-24"
+---
+
+---
+title: "IS3107 Project"
+output: html_document
+date: "2023-03-19"
+---
+
+```{r load libraries}
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(psych)
+library(lubridate)
+```
+
+```{r load datasets, echo=T}
+cp_master <- read.csv("carpark_master_data_18032023.csv", header = T)
+cp_availability <- read.csv("carpark_availability_18032023.csv", header = T)
+cp_rates <- read.csv("carpark_rates_18032023.csv", header = T)
+```
+
+```{r clean master data, echo = T}
+# can only find range of distance and latitude cos SG is only certain dimensions wide
+describe(cp_master)
+
+# check number of columns with missing values
+apply(X = is.na(cp_master), MARGIN = 2, FUN = sum)
+```
+
+```{r clean availability, echo = T}
+describe(cp_availability)
+
+# check number of columns with missing values
+apply(X = is.na(cp_availability), MARGIN = 2, FUN = sum)
+```
+
+```{r update cp availability with datetime, echo = T}
+# add 8 hours in milliseconds, divide to convert to seconds then convert to UTC format with lubridate package
+cp_availability_new <- cp_availability %>% mutate(
+  ingestionDateTime = as_datetime((ingestionTime +  28800000)/ 1000))
+
+head(cp_availability_new)
+```
+
+
+```{r boxplots, echo = T}
+boxplot(cp_availability$temperature, main = "Boxplot for Temperature", horizontal = T)
+boxplot(cp_availability$humidity, main = "Boxplot for Humidity", horizontal = T)
+
+# Frequency of Weather Types
+ggplot(cp_availability, aes(x = weather, fill = weather)) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.5) +
+  scale_y_continuous(limit = c(0, 35000)) +
+  ggtitle("Frequency of Weather Types")
+  
+# Frequency of Weather Description
+ggplot(cp_availability, aes(x = description, fill = description)) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.5) +
+  scale_y_continuous(limit = c(0, 30000)) +
+  ggtitle("Weather Descriptions")
+```
+
+```{r clean rates, echo = T}
+describe(cp_rates)
+
+# check number of columns with missing values
+apply(X = is.na(cp_rates), MARGIN = 2, FUN = sum)
+
+# clean carparks where total capacity = 0
+cp_rates_clean <- cp_rates %>% filter(totalCapacity != 0)
+View(cp_rates_clean)
+```
+
+```{r export cleaned data into excel, echo = F}
+# write.csv(cp_availability_new, "C:/Users/tongt/Downloads/IS3107/Project/carpark_availability.csv", row.names=FALSE)
+
+# write.csv(cp_rates, "C:/Users/tongt/Downloads/IS3107/Project/carpark_rates.csv", row.names=FALSE)
+
+#write.csv(cp_master, "C:/Users/tongt/Downloads/IS3107/Project/carpark_master.csv", row.names=FALSE)
+```
