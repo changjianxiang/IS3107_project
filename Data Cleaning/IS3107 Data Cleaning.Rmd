@@ -19,9 +19,9 @@ library(lubridate)
 ```
 
 ```{r load datasets, echo=T}
-cp_master <- read.csv("carpark_master_data_18032023.csv", header = T)
-cp_availability <- read.csv("carpark_availability_18032023.csv", header = T)
-cp_rates <- read.csv("carpark_rates_18032023.csv", header = T)
+cp_master <- read.csv("carpark_master_data_24032023.csv", header = T)
+cp_availability <- read.csv("carpark_availability_24032023.csv", header = T)
+cp_rates <- read.csv("carpark_rates_24032023.csv", header = T)
 ```
 
 ```{r clean master data, echo = T}
@@ -75,13 +75,12 @@ apply(X = is.na(cp_rates), MARGIN = 2, FUN = sum)
 
 # clean carparks where total capacity = 0
 cp_rates_clean <- cp_rates %>% filter(totalCapacity != 0)
-View(cp_rates_clean)
 ```
 
 ```{r export cleaned data into excel, echo = F}
-# write.csv(cp_availability_new, "C:/Users/tongt/Downloads/IS3107/Project/carpark_availability.csv", row.names=FALSE)
+#write.csv(cp_availability_new, "C:/Users/tongt/OneDrive/Documents/GitHub/IS3107_project/Data Cleaning/carpark_availability_cleaned.csv", row.names=FALSE)
 
-# write.csv(cp_rates, "C:/Users/tongt/Downloads/IS3107/Project/carpark_rates.csv", row.names=FALSE)
+#write.csv(cp_rates, "C:/Users/tongt/OneDrive/Documents/GitHub/IS3107_project/Data Cleaning/carpark_rates_cleaned.csv", row.names=FALSE)
 
-#write.csv(cp_master, "C:/Users/tongt/Downloads/IS3107/Project/carpark_master.csv", row.names=FALSE)
+#write.csv(cp_master, "C:/Users/tongt/OneDrive/Documents/GitHub/IS3107_project/Data Cleaning/carpark_master_cleaned.csv", row.names=FALSE)
 ```
