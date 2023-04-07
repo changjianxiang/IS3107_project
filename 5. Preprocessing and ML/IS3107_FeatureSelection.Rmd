@@ -1,0 +1,24 @@
+---
+title: "IS3107_Project"
+output: html_document
+---
+
+```{r set-up, echo = T, message = F, warning = F, include=F}  
+library(dplyr)
+library(corrplot)
+```
+
+```{r read_data, echo=TRUE}
+data <- read.csv("processed_merged_carparks.csv", header = T)
+data <- data[data$lotType == "C", ] 
+data <- data[-c(1,3:5,8:12,14,28:29)]
+```
+
+# Feature Selection
+## Correlation plots
+```{r correlation plot, echo = F, eval=T}
+# Correlation plot
+res <- cor(data)
+corrplot(res, method="number",number.cex = 0.4, tl.cex = 0.5)
+data <- data[-c(4,16)]
+```
