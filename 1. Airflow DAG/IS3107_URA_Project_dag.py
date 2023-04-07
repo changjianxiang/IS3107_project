@@ -109,8 +109,7 @@ with DAG(
 
             print("Retrieving for car park no: " + carparkNo)
 
-            # Removed API KEY
-            response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=" + str(lat) + "&lon=" + str(lng) + "&appid=" + "&units=metric")
+            response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=" + str(lat) + "&lon=" + str(lng) + "&appid=4e5b48b1aceb1dd28727e8cf1e6d95d9&units=metric")
             output = response.json()
 
             carparkNoList.append(carparkNo)
